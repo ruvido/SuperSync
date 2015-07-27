@@ -41,13 +41,22 @@ choice = gets.chomp
 
 case choice
 when "1"
-	puts "Project name:"
-	proj = storage + "/" + gets.chomp
+	# puts "Project name:"
+	# proj = storage + "/" + gets.chomp
+	print "Date: "
+	wdate = gets.chomp
+	print "Groom: "
+	groom = gets.chomp
+	print "Bride: "
+	bride = gets.chomp
+	projtitle=wdate+" "+groom+" e "+bride
+	proj = storage + "/" + projtitle
 	if File.directory?(proj)
 		puts "No way this project already exits"
 		puts "Exiting"
 		exit
 	else
+		puts "This project will be copied to "+storage
 		Dir.mkdir(proj)
 		sddest=proj+"/originals"
 		Dir.mkdir(sddest)
@@ -58,10 +67,13 @@ when "1"
 		Dir.mkdir(proj+"/exports"+"/black&white")
 		Dir.mkdir(proj+"/exports"+"/book")
 		File.write(configdir+'/latest', proj)
+		FileUtils.cp_r configdir+'/template.lrcat', proj+'/'+projtitle+'.lrcat' 
 	end
 when "2"
 	proj = File.read(configdir+"/latest")
 	sddest=proj+"/originals"
+	puts "This project will be updated to "+sddest
+
 
 when "3"
 	puts "Enter full path"
@@ -74,12 +86,22 @@ else
 	exit
 end
 
+total_images=Dir[File.join(sddest, '**', '*')].count { |file| File.file?(file) }
+puts "-----------------------------------------------"
+print total_images
+puts  " already present in this project"
+
+puts "==============================================="
+puts ""
+puts " Detected cards:"
 Dir.glob("/Volumes/*").each do |volname|
 		dcim=volname+"/DCIM"
 		if File.directory?(dcim)
+			puts " "+dcim
 			dcimlist.push(dcim)
 		end
 end
+puts ""
 
 puts "==============================================="
 imported_images=0
@@ -88,9 +110,9 @@ dcimlist.each do |card|
 	n_images=Dir[File.join(card, '**', '*')].count { |file| File.file?(file) }
 	imported_images+=n_images
 
-	print n_images, " images\t",card
+	print n_images, " images\t", ' from ', card
 
-	ii=0
+	ii=1
 	while 1 do
 		slotname = sddest+"/"+'scheda_'+ii.to_s
 		if File.directory?(slotname) 
@@ -98,6 +120,7 @@ dcimlist.each do |card|
 		else
 			# puts sddest+"/"+slotname
 			Dir.mkdir(slotname)
+			print ' to ', slotname
 			FileUtils.cp_r card, slotname
 			puts ' copied!'
 			break
