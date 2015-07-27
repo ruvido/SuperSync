@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
-
+require 'FileUtils'
 # ================================
 dcimlist	=	[]
 proj 		=	''
 configdir	=	'/Users/ruvido/Dropbox/.supersync'
 storage 	= 	''
+sddest		=	''
 # ================================
 
 # ----------------------------------------------
@@ -25,7 +26,7 @@ if File.file?(configfile)
 end
 
 # ----------------------------------------------
-# Print menu dialog
+# Print menu dialog and read choice made
 # ----------------------------------------------
 puts ""
 puts "SuperSync"
@@ -41,20 +42,37 @@ choice = gets.chomp
 case choice
 when "1"
 	puts "Project name:"
-	proj = gets.chomp
+	proj = storage + "/" + gets.chomp
+	if File.directory?(proj)
+		puts "No way this project already exits"
+		puts "Exiting"
+		exit
+	else
+		Dir.mkdir(proj)
+		sddest=proj+"/originals"
+		Dir.mkdir(sddest)
+		Dir.mkdir(proj+"/exports")
+		Dir.mkdir(proj+"/exports"+"/facebook")
+		Dir.mkdir(proj+"/exports"+"/whatsapp")
+		Dir.mkdir(proj+"/exports"+"/color")
+		Dir.mkdir(proj+"/exports"+"/black&white")
+		Dir.mkdir(proj+"/exports"+"/book")
+		File.write(configdir+'/latest', proj)
+	end
 when "2"
-	puts 2
+	proj = File.read(configdir+"/latest")
+	sddest=proj+"/originals"
+
 when "3"
-	puts 3
+	puts "Enter full path"
+	proj = gets.chomp
+	sddest=proj+"/originals"
+
 else
 	puts "Please choose one of the three options"
 	puts "Exiting"
 	exit
 end
-
-puts proj
-exit
-
 
 Dir.glob("/Volumes/*").each do |volname|
 		dcim=volname+"/DCIM"
@@ -63,4 +81,45 @@ Dir.glob("/Volumes/*").each do |volname|
 		end
 end
 
-puts dcimlist
+puts "==============================================="
+imported_images=0
+dcimlist.each do |card|
+
+	n_images=Dir[File.join(card, '**', '*')].count { |file| File.file?(file) }
+	imported_images+=n_images
+
+	print n_images, " images\t",card
+
+	ii=0
+	while 1 do
+		slotname = sddest+"/"+'scheda_'+ii.to_s
+		if File.directory?(slotname) 
+			ii+=1
+		else
+			# puts sddest+"/"+slotname
+			Dir.mkdir(slotname)
+			FileUtils.cp_r card, slotname
+			puts ' copied!'
+			break
+		end
+	end
+end
+puts "-----------------------------------------------"
+print imported_images
+puts  " images imported"
+
+total_images=Dir[File.join(sddest, '**', '*')].count { |file| File.file?(file) }
+puts "-----------------------------------------------"
+print total_images
+puts  " total images imported in project"
+puts "==============================================="
+puts ""
+
+# ===============================================
+# TODO:
+# - it doesnt check for duplicates, it can replicate entire directories
+# ===============================================
+
+
+
+
