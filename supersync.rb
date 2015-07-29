@@ -61,13 +61,15 @@ when "1"
 		sddest=proj+"/originals"
 		Dir.mkdir(sddest)
 		Dir.mkdir(proj+"/exports")
-		Dir.mkdir(proj+"/exports"+"/facebook")
-		Dir.mkdir(proj+"/exports"+"/whatsapp")
-		Dir.mkdir(proj+"/exports"+"/color")
-		Dir.mkdir(proj+"/exports"+"/black&white")
-		Dir.mkdir(proj+"/exports"+"/book")
-		File.write(configdir+'/latest', proj)
+		Dir.mkdir(proj+"/exports"+"/1_whatsapp")
+		Dir.mkdir(proj+"/exports"+"/2_facebook")
+		Dir.mkdir(proj+"/exports"+"/3_squares")
+		Dir.mkdir(proj+"/exports"+"/4_print")
+		Dir.mkdir(proj+"/exports"+"/4_print/color")
+		Dir.mkdir(proj+"/exports"+"/4_print/black&white")
+		Dir.mkdir(proj+"/exports"+"/5_book")
 		FileUtils.cp_r configdir+'/template.lrcat', proj+'/'+projtitle+'.lrcat' 
+		File.write(configdir+'/latest', proj)
 	end
 when "2"
 	proj = File.read(configdir+"/latest")
