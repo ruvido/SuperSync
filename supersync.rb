@@ -60,14 +60,14 @@ when "1"
 		Dir.mkdir(proj)
 		sddest=proj+"/originals"
 		Dir.mkdir(sddest)
-		Dir.mkdir(proj+"/exports")
-		Dir.mkdir(proj+"/exports"+"/1_whatsapp")
-		Dir.mkdir(proj+"/exports"+"/2_facebook")
-		Dir.mkdir(proj+"/exports"+"/3_squares")
-		Dir.mkdir(proj+"/exports"+"/4_print")
-		Dir.mkdir(proj+"/exports"+"/4_print/color")
-		Dir.mkdir(proj+"/exports"+"/4_print/black&white")
-		Dir.mkdir(proj+"/exports"+"/5_book")
+		Dir.mkdir(proj+"/export")
+		Dir.mkdir(proj+"/export"+"/1_whatsapp")
+		Dir.mkdir(proj+"/export"+"/2_facebook")
+		Dir.mkdir(proj+"/export"+"/3_squares")
+		Dir.mkdir(proj+"/export"+"/4_print")
+		Dir.mkdir(proj+"/export"+"/4_print/color")
+		Dir.mkdir(proj+"/export"+"/4_print/black&white")
+		Dir.mkdir(proj+"/export"+"/5_book")
 		FileUtils.cp_r configdir+'/template.lrcat', proj+'/'+projtitle+'.lrcat' 
 		File.write(configdir+'/latest', proj)
 	end
