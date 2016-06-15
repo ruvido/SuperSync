@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Super Sync SD}
   spec.description   = %q{Super Sync SD}
-  spec.homepage      = "ruvido.github.io/super_sync"
+  spec.homepage      = "https://github.com/ruvido/SuperSync"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

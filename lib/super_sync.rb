@@ -5,6 +5,7 @@ require "super_sync/project"
 require "super_sync/messages"
 require 'ruby-progressbar'
 require 'pathname'
+require 'fileutils'
 
 module SuperSync
 
