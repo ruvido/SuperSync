@@ -30,7 +30,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## TODO
 
-Look at the [todo](TODO.html) page for a list of priorities.
+Look at the [todo](TODO.md) page for a list of priorities.
 
 ## Contributing
 
