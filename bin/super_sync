@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require 'super_sync'
+
+STORAGE = '/Volumes/speed512/weddings'
+# STORAGE = '/Users/ruvido/Desktop/weddings'
+CONFIG = {
+  'storage'   => File.join(STORAGE,'import'),
+  'lightroom' => File.join(STORAGE,'templates/lightroom'),
+  'target'    => 'originals',
+  'raw_format'=> 'RAF',
+  'debug'     => false
+}
+DEBUG=CONFIG['debug']
+
+if DEBUG
+  wedding_data = {
+    'date' => '20051003',
+    'groom'=> 'Francesco',
+    'bride'=> 'Alessandra'
+  }
+  wedding_data ['title']="#{wedding_data['date']} #{wedding_data['groom']} e #{wedding_data['bride']}"
+else
+  wedding_data = SuperSync::Utilities::CLIdata.fetch()
+end
+
+# Create a new project
+project  = SuperSync::Project.new  CONFIG, wedding_data
+messages = SuperSync::Messages.new project
+
+# Detect attached cards
+list_of_cards=SuperSync::Utilities::Cards.list("Volumes","DCIM")
+messages.info_cards(list_of_cards)
+
+# Start importing cards into the project
+# (include log messages from progress bar)
+project.import_from_cards(list_of_cards) 
+
